@@ -1,0 +1,43 @@
+version: '3.3'
+services:
+    registry:
+        networks:
+            - shared-net
+        ports:
+            - '5000:5000'
+        restart: always
+        container_name: registry
+        image: 'registry:2'
+    redis:
+        ports:
+            - '6379:6379'
+        restart: always
+        image: redis:4.0.5-alpine
+        container_name: redis
+        command: [ "redis-server", "--appendonly", "yes", "--requirepass PvP0lgXB8hHmqKHb" ]
+        hostname: redis
+        networks:
+            - shared-net
+        volumes:
+            - redis-data:/data
+    mariadb:
+        ports:
+            - '3333:3306'
+        restart: always
+        container_name: mariadb
+        networks:
+            - shared-net
+        volumes:
+            - '/srv/mariadb/mustbusk/:/bitnami/mariadb'
+        environment:
+            - MYSQL_ROOT_PASSWORD=tf8ugA2McCTQj0fV
+            - MYSQL_USER=mustbuskuser
+            - MYSQL_PASSWORD=CJ17elaBsKEMUU4l
+            - MYSQL_DATABASE=mustbusk
+        image: 'mariadb:10.4'
+
+networks:
+    shared-net:
+
+volumes:
+    redis-data:
