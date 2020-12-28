@@ -80,9 +80,10 @@ public class UserService
 		userPersistence.delete(id);
 	}
 
-	public UserDAO findUserByEmail(String name)
+	public UserDAO findUserByEmail(String email)
 	{
-		return userPersistence.findByEmail(name).map(UserUtil::convertToUserDAO).orElse(null);
+		return UserUtil.convertToUserDAO(userPersistence.findByEmail(email)
+			.orElseThrow(() -> new FrontEndException(HttpStatus.BAD_REQUEST, String.format("User email %s not found", email))));
 	}
 
 	public void init()

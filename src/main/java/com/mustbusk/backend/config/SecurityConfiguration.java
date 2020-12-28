@@ -65,7 +65,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 			.antMatchers("/admin/**")
 			.hasAuthority(RoleType.ADMIN.getValue())
 			.antMatchers("/user/**")
-			.hasAnyAuthority(RoleType.ADMIN.getValue(), RoleType.BUSKER.getValue())
+			.hasAnyAuthority(RoleType.ADMIN.getValue(), RoleType.USER.getValue())
 			.antMatchers("/busker/**")
 			.hasAnyAuthority(RoleType.ADMIN.getValue(), RoleType.BUSKER.getValue(), RoleType.USER.getValue())
 			.and()
