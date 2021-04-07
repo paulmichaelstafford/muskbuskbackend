@@ -19,9 +19,9 @@ public class RolePersistence
 		this.roleRepository = roleRepository;
 	}
 
-	public Optional<Role> findByRole(String roleValue)
+	public Optional<Role> findByName(String roleName)
 	{
-		return roleRepository.findByRole(roleValue);
+		return roleRepository.findByRoleName(roleName);
 	}
 
 	public List<Role> findAll()

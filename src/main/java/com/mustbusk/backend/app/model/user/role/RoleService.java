@@ -23,7 +23,7 @@ public class RoleService
 		Map<RoleType, Role> roles = new HashMap<>();
 		for (int i = 0; i < RoleType.values().length; i++)
 		{
-			Optional<Role> optionalRole = rolePersistence.findByRole(RoleType.values()[i].toString());
+			Optional<Role> optionalRole = rolePersistence.findByName(RoleType.values()[i].toString());
 			if (optionalRole.isPresent())
 			{
 				roles.put(RoleType.values()[i], optionalRole.get());
