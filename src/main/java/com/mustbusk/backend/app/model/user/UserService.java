@@ -30,13 +30,22 @@ public class UserService
 		this.roleService = roleService;
 	}
 
-	public UserDAO saveNewUser(User userToSave)
+	public UserDAO saveNewUser(UserDAO user)
 	{
-		if (userPersistence.findByEmail(userToSave.getEmail()).isPresent())
+		if (userPersistence.findByEmail(user.getEmail()).isPresent())
 		{
-			throw new FrontEndException(HttpStatus.CONFLICT, String.format("User %s already exists", userToSave.getEmail()));
+			throw new FrontEndException(HttpStatus.CONFLICT, String.format("User %s already exists", user.getEmail()));
 		}
+
+		User userToSave = new User();
+		userToSave.setEmail(user.getEmail());
+		userToSave.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		userToSave.setFirstName(user.getFirstName());
+		userToSave.setLastName(user.getLastName());
+		userToSave.setRoles(user.getRoles());
+		userToSave.setActive(Active.ACTIVE);
 		userToSave.setPassword(bCryptPasswordEncoder.encode(userToSave.getPassword()));
+
 		return UserUtil.convertToUserDAO(userPersistence.save(userToSave));
 	}
 
@@ -92,7 +101,7 @@ public class UserService
 		if (!userPersistence.findByEmail(adminUserEmail).isPresent())
 		{
 			String password = "patrickIsDumb";
-			User adminUser = new User();
+			UserDAO adminUser = new UserDAO();
 			adminUser.setEmail(adminUserEmail);
 			adminUser.setPassword(password);
 			adminUser.setRoles(new HashSet<>(roleService.getAllRoles().values()));

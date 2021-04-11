@@ -1,12 +1,14 @@
-package com.mustbusk.backend.controller.fe;
+package com.mustbusk.backend.controller.fe.user;
 
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mustbusk.backend.app.model.user.UserDAO;
@@ -25,9 +27,10 @@ public class UserController
 		this.userService = userService;
 	}
 
-	@RequestMapping(value = "/getLoggedInUser", method = RequestMethod.GET)
+	@GetMapping(value = "/getLoggedInUser")
 	public ResponseEntity<UserDAO> getLoggedInUser(Principal principalUser)
 	{
 		return new ResponseEntity<>(userService.findUserByEmail(principalUser.getName()), HttpStatus.OK);
 	}
+
 }

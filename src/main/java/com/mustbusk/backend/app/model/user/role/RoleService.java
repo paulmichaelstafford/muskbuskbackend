@@ -1,6 +1,8 @@
 package com.mustbusk.backend.app.model.user.role;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -30,6 +32,21 @@ public class RoleService
 			}
 		}
 		return roles;
+	}
+
+	public List<RoleDAO> getRoles()
+	{
+		List<Role> roles = rolePersistence.findAll();
+		List<RoleDAO> roleDAOs = new ArrayList<>();
+		for(Role r : roles)
+		{
+			RoleDAO roleDAO = new RoleDAO();
+			roleDAO.setId(r.getId());
+			roleDAO.setRoleName(r.getRoleName());
+			roleDAOs.add(roleDAO);
+		}
+
+		return roleDAOs;
 	}
 
 	public Role save(Role role)
