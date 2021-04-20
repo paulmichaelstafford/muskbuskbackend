@@ -1,5 +1,6 @@
 package com.mustbusk.backend.app.model.user;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,4 +15,6 @@ public interface UserRepository extends JpaRepository<User, Long>
 	Optional<User> findByEmail(String email);
 
 	List<User> findAllByActive(Active active);
+
+	List<User> findAll(Pageable pageable);
 }

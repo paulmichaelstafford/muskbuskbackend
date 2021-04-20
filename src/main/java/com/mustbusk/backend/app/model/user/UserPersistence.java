@@ -5,6 +5,8 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +57,11 @@ public class UserPersistence
 	public Optional<User> findById(Long id)
 	{
 		return userRepository.findById(id);
+	}
+
+	public Page<User> findAll(Pageable pageable)
+	{
+		return userRepository.findAll(pageable);
 	}
 }
 

@@ -1,10 +1,14 @@
 package com.mustbusk.backend.app.model.user;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,7 +34,7 @@ public class UserService
 		this.roleService = roleService;
 	}
 
-	public UserDAO saveNewUser(UserDAO user)
+	public UserDAO saveNew(UserDAO user)
 	{
 		if (userPersistence.findByEmail(user.getEmail()).isPresent())
 		{
@@ -49,12 +53,14 @@ public class UserService
 		return UserUtil.convertToUserDAO(userPersistence.save(userToSave));
 	}
 
-	public UserDAO updateUser(Long userIdToUpdate, User passedUser)
+	public UserDAO update(Long userIdToUpdate, UserDAO passedUser)
 	{
 		User originalUser = userPersistence.findById(userIdToUpdate)
 			.orElseThrow(() -> new FrontEndException(HttpStatus.BAD_REQUEST, String.format("User ID %d not found", userIdToUpdate)));
 
-		//I'm not updating the password
+		User userToSave = new User();
+		userToSave.setEmail(passedUser.getEmail());
+
 		if (passedUser.getPassword() == null)
 		{
 			passedUser.setPassword(originalUser.getPassword());
@@ -64,32 +70,34 @@ public class UserService
 			passedUser.setPassword(bCryptPasswordEncoder.encode(passedUser.getPassword()));
 		}
 
-		checkBeforeUpdating(originalUser, passedUser);
-		return UserUtil.convertToUserDAO(userPersistence.update(userIdToUpdate, passedUser));
-
+		userToSave.setFirstName(passedUser.getFirstName());
+		userToSave.setLastName(passedUser.getLastName());
+		userToSave.setRoles(passedUser.getRoles());
+		userToSave.setActive(passedUser.getActive());
+		checkBeforeUpdating(originalUser, userToSave);
+		return UserUtil.convertToUserDAO(userPersistence.update(userIdToUpdate, userToSave));
 	}
 
 	private void checkBeforeUpdating(User originalUser, User userToUpdate)
 	{
 		if (originalUser.equals(userToUpdate))
 		{
-			throw new FrontEndException(HttpStatus.NOT_MODIFIED,
-				String.format("Nothing has changed in " + "the passed user {%s}", userToUpdate.toString()));
+			throw new FrontEndException(HttpStatus.NOT_MODIFIED, String.format("Nothing has changed in the passed user %s", userToUpdate.getId()));
 		}
 
 		if (originalUser.getUpdatedAt().toEpochMilli() != userToUpdate.getUpdatedAt().toEpochMilli())
 		{
 			throw new FrontEndException(HttpStatus.UNPROCESSABLE_ENTITY,
-				String.format("user{%s} has more recently been updated." + "Please reload the user. ", userToUpdate.getId()));
+				String.format("user %s has more recently been updated." + "Please reload the user. ", userToUpdate.getId()));
 		}
 	}
 
-	public void deleteUser(Long id)
+	public void delete(Long id)
 	{
 		userPersistence.delete(id);
 	}
 
-	public UserDAO findUserByEmail(String email)
+	public UserDAO findByEmail(String email)
 	{
 		return UserUtil.convertToUserDAO(userPersistence.findByEmail(email)
 			.orElseThrow(() -> new FrontEndException(HttpStatus.BAD_REQUEST, String.format("User email %s not found", email))));
@@ -108,8 +116,16 @@ public class UserService
 			adminUser.setFirstName("Patrick");
 			adminUser.setLastName("Dumb");
 			adminUser.setActive(Active.ACTIVE);
-			saveNewUser(adminUser);
+			saveNew(adminUser);
 			logger.info("Created user {} with password {}", adminUserEmail, password);
 		}
+	}
+
+	public List<UserDAO> findPaginated(int page, int size)
+	{
+		Pageable firstPageWithTwoElements = PageRequest.of(page, size);
+		List<UserDAO> users = new ArrayList<>();
+		userPersistence.findAll(firstPageWithTwoElements).toList().stream().map(UserUtil::convertToUserDAO).forEach(users::add);
+		return users;
 	}
 }
