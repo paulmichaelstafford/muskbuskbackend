@@ -27,6 +27,6 @@ public class AuthController
 	@RequestMapping(value = "/auth/user", method = RequestMethod.GET)
 	public UserDAO user(Principal user)
 	{
-		return userService.findUserByEmail(user.getName());
+		return userService.findByEmail(user.getName());
 	}
 }

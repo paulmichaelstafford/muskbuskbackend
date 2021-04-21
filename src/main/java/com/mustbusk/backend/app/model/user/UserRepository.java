@@ -16,5 +16,4 @@ public interface UserRepository extends JpaRepository<User, Long>
 
 	List<User> findAllByActive(Active active);
 
-	List<User> findAll(Pageable pageable);
 }

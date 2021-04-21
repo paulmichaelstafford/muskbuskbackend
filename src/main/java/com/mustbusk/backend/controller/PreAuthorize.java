@@ -22,7 +22,7 @@ public class PreAuthorize
 	{
 		boolean isAllowed = true;
 
-		UserDAO userDAO = userService.findUserByEmail(principalUser.getName());
+		UserDAO userDAO = userService.findByEmail(principalUser.getName());
 		if (userDAO == null)
 		{
 			logger.error("Email user{} does is not in db", principalUser.getName());
