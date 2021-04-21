@@ -28,6 +28,6 @@ public class UserController
 	@GetMapping(value = "/getLoggedInUser")
 	public ResponseEntity<UserDAO> getLoggedInUser(Principal principalUser)
 	{
-		return new ResponseEntity<>(userService.findUserByEmail(principalUser.getName()), HttpStatus.OK);
+		return new ResponseEntity<>(userService.findByEmail(principalUser.getName()), HttpStatus.OK);
 	}
 }

@@ -8,12 +8,13 @@ import com.mustbusk.backend.app.model.user.role.Role;
 
 public class UserDAO
 {
+
 	private Long id;
 	private String email;
 	private String password;
 	private String firstName;
 	private String lastName;
-	private Active active;
+//	private Active active;
 	private Set<Role> roles;
 	private Instant createdAt;
 	private Instant updatedAt;
@@ -70,12 +71,12 @@ public class UserDAO
 
 	public Active getActive()
 	{
-		return active;
+		return Active.ACTIVE;
 	}
 
 	public void setActive(Active active)
 	{
-		this.active = active;
+
 	}
 
 	public Set<Role> getRoles()
