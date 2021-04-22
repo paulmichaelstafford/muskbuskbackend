@@ -8,7 +8,7 @@ public class UserUtil
 		userDAO.setId(user.getId());
 		userDAO.setActive(user.getActive());
 		userDAO.setEmail(user.getEmail());
-		userDAO.setRoles(user.getRoles());
+		userDAO.setRoles((user.getRoles()));
 		userDAO.setFirstName(user.getFirstName());
 		userDAO.setLastName(user.getLastName());
 		userDAO.setCreatedAt(user.getCreatedAt());
