@@ -60,14 +60,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 	{
 		http.csrf().disable();
 		http.authorizeRequests()
-			.antMatchers("/auth/user")
+			.antMatchers("/**")
 			.permitAll()
-			.antMatchers("/admin/**")
-			.hasAuthority(RoleType.ADMIN.getValue())
-			.antMatchers("/api/v1/user/**")
-			.hasAnyAuthority(RoleType.ADMIN.getValue(), RoleType.USER.getValue())
-			.antMatchers("/busker/**")
-			.hasAnyAuthority(RoleType.ADMIN.getValue(), RoleType.BUSKER.getValue(), RoleType.USER.getValue())
+//			.antMatchers("/admin/**")
+//			.hasAuthority(RoleType.ADMIN.getValue())
+//			.antMatchers("/api/v1/user/**")
+//			.hasAnyAuthority(RoleType.ADMIN.getValue(), RoleType.USER.getValue())
+//			.antMatchers("/busker/**")
+//			.hasAnyAuthority(RoleType.ADMIN.getValue(), RoleType.BUSKER.getValue(), RoleType.USER.getValue())
 			.and()
 			.httpBasic()
 			.authenticationEntryPoint(appAuthenticationEntryPoint);
