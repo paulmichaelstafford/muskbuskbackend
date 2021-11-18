@@ -1,5 +1,6 @@
 package com.mustbusk.backend.app.model.user;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -62,6 +63,11 @@ public class UserPersistence
 	public Page<User> findAll(Pageable pageable)
 	{
 		return userRepository.findAll(pageable);
+	}
+	
+	public List<User> getAll()
+	{
+		return userRepository.findAll();
 	}
 }
 

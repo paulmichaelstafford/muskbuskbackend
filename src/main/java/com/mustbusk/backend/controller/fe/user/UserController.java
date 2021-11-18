@@ -1,6 +1,7 @@
 package com.mustbusk.backend.controller.fe.user;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,4 +31,13 @@ public class UserController
 	{
 		return new ResponseEntity<>(userService.findByEmail(principalUser.getName()), HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/getAll")
+	public ResponseEntity<List<UserDAO>> getAll()
+	{
+		return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
+	}
+	
+	
+	
 }

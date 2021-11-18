@@ -128,4 +128,12 @@ public class UserService
 		userPersistence.findAll(firstPageWithTwoElements).toList().stream().map(UserUtil::convertToUserDAO).forEach(users::add);
 		return users;
 	}
+	
+
+	public List<UserDAO> getAll()
+	{
+		List<UserDAO> users = new ArrayList<>();
+		userPersistence.getAll().stream().map(UserUtil::convertToUserDAO).forEach(users::add);
+		return users;
+	}
 }
