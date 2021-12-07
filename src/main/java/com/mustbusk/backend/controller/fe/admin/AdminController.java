@@ -19,9 +19,11 @@ import com.mustbusk.backend.app.model.user.UserService;
 import com.mustbusk.backend.app.model.user.role.RoleDAO;
 import com.mustbusk.backend.app.model.user.role.RoleService;
 import com.mustbusk.backend.config.WebMvnConfig;
+import com.mustbusk.backend.util.Page;
+import com.mustbusk.backend.util.SortDirection;
 
 @RestController
-@RequestMapping(path = WebMvnConfig.API_ENDPOINT + "admin")
+@RequestMapping(path = WebMvnConfig.API_ENDPOINT + "/admin")
 public class AdminController
 {
 	private final UserService userService;
@@ -65,9 +67,10 @@ public class AdminController
 		return new ResponseEntity<>(true, HttpStatus.OK);
 	}
 
-	@GetMapping(params = { "page", "size" })
-	public ResponseEntity<List<UserDAO>> findPaginated(@RequestParam("page") int page, @RequestParam("size") int size)
+	@GetMapping(params = { "page", "size", "sortDirection", "sortColumn" })
+	public ResponseEntity<Page<UserDAO>> findPaginated(@RequestParam("page") int page, @RequestParam("size") int size,
+		@RequestParam("sortDirection") SortDirection sortDirection, @RequestParam("sortColumn") String sortColumn)
 	{
-		return new ResponseEntity<>(userService.findPaginated(page, size), HttpStatus.OK);
+		return new ResponseEntity<>(userService.findPaginated(page, size, sortDirection, sortColumn), HttpStatus.OK);
 	}
 }

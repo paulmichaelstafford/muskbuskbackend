@@ -14,7 +14,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 @Configuration
 public class WebMvnConfig implements WebMvcConfigurer
 {
-	public static final String API_ENDPOINT = "api/v1/";
+	public static final String API_ENDPOINT = "/api/v1";
 
 	@Bean
 	public LocaleResolver localeResolver()

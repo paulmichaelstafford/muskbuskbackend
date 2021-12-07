@@ -12,10 +12,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mustbusk.backend.app.model.Active;
 import com.mustbusk.backend.app.model.FrontEndException;
 import com.mustbusk.backend.app.model.user.role.RoleService;
+import com.mustbusk.backend.util.Page;
+import com.mustbusk.backend.util.SortDirection;
 
 @Service()
 public class UserService
@@ -121,12 +124,9 @@ public class UserService
 		}
 	}
 
-	public List<UserDAO> findPaginated(int page, int size)
+	public Page<UserDAO> findPaginated(int page, int size, SortDirection sortDirection, String sortColumn)
 	{
-		Pageable firstPageWithTwoElements = PageRequest.of(page, size);
-		List<UserDAO> users = new ArrayList<>();
-		userPersistence.findAll(firstPageWithTwoElements).toList().stream().map(UserUtil::convertToUserDAO).forEach(users::add);
-		return users;
+		return userPersistence.findAll(page, size, sortDirection, sortColumn);
 	}
 	
 

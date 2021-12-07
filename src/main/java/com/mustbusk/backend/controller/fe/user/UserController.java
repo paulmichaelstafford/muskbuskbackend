@@ -15,7 +15,7 @@ import com.mustbusk.backend.app.model.user.UserService;
 import com.mustbusk.backend.config.WebMvnConfig;
 
 @RestController
-@RequestMapping(path = WebMvnConfig.API_ENDPOINT + "user")
+@RequestMapping(path = WebMvnConfig.API_ENDPOINT + "/user")
 public class UserController
 {
 	private final UserService userService;
@@ -37,7 +37,4 @@ public class UserController
 	{
 		return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
 	}
-	
-	
-	
 }
